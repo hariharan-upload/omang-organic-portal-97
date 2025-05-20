@@ -70,7 +70,7 @@ const AboutSection = () => {
             data-animate="fade-in"
             style={{ animationDelay: '200ms' }}
           >
-            Bringing Nature's Finest to Your Table
+            Bringing Nature's Finest to You
           </h2>
           
           <p 
