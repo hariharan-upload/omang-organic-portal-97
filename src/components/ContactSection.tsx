@@ -1,7 +1,7 @@
-
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import emailjs from '@emailjs/browser';
 
 const ContactItem = ({ 
   icon, 
@@ -33,6 +33,9 @@ const ContactItem = ({
 
 const ContactSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{message: string, type: 'success' | 'error'} | null>(null);
+
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -60,6 +63,38 @@ const ContactSection = () => {
       }
     };
   }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    try {
+      setLoading(true);
+      setStatus(null);
+
+      const result = await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        form,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      if (result.text === 'OK') {
+        setStatus({
+          message: 'Message sent successfully! We\'ll get back to you soon.',
+          type: 'success'
+        });
+        form.reset();
+      }
+    } catch (error) {
+      setStatus({
+        message: 'Failed to send message. Please try again.',
+        type: 'error'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section id="contact" ref={sectionRef} className="section-padding bg-omang-beige">
@@ -92,11 +127,11 @@ const ContactSection = () => {
             <div className="space-y-8">
               <ContactItem 
                 icon={<MapPin size={20} />}
-                title="Visit Our Office"
+                title="Head Office:"
                 content={
                   <>
-                    Dubai Business Bay<br />
-                    Sheikh Zayed Road, Dubai, UAE
+                    Omang Organic Foodstuff LLC.<br />
+                    Dubai, United Arab Emirates
                   </>
                 }
                 delay={600}
@@ -107,8 +142,8 @@ const ContactSection = () => {
                 title="Call Us"
                 content={
                   <>
-                    +971 4 123 4567<br />
-                    +971 50 987 6543
+                    Office No : 04- 396 1744 -
+                    Mobile No :  058-8232150
                   </>
                 }
                 delay={800}
@@ -119,8 +154,7 @@ const ContactSection = () => {
                 title="Email Us"
                 content={
                   <>
-                    info@omangorganics.com<br />
-                    sales@omangorganics.com
+                    sales@omangorganic.com
                   </>
                 }
                 delay={1000}
@@ -147,23 +181,37 @@ const ContactSection = () => {
           >
             <h3 className="text-xl font-medium mb-6">Send Us a Message</h3>
             
-            <form className="space-y-5">
+            {status && (
+              <div className={`p-4 mb-6 rounded-md ${
+                status.type === 'success' 
+                  ? 'bg-green-50 text-green-700 border border-green-200' 
+                  : 'bg-red-50 text-red-700 border border-red-200'
+              }`}>
+                {status.message}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">Name</label>
+                  <label htmlFor="from_name" className="block text-sm font-medium text-foreground mb-1">Name</label>
                   <input 
                     type="text" 
-                    id="name" 
+                    id="from_name"
+                    name="from_name"
+                    required
                     className="w-full px-4 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-omang-green/40 transition-all"
                     placeholder="Your name"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">Email</label>
+                  <label htmlFor="reply_to" className="block text-sm font-medium text-foreground mb-1">Email</label>
                   <input 
                     type="email" 
-                    id="email" 
+                    id="reply_to"
+                    name="reply_to"
+                    required
                     className="w-full px-4 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-omang-green/40 transition-all"
                     placeholder="Your email"
                   />
@@ -175,6 +223,7 @@ const ContactSection = () => {
                 <input 
                   type="text" 
                   id="company" 
+                  name="company"
                   className="w-full px-4 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-omang-green/40 transition-all"
                   placeholder="Your company"
                 />
@@ -184,6 +233,8 @@ const ContactSection = () => {
                 <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-1">Subject</label>
                 <select 
                   id="subject" 
+                  name="subject"
+                  required
                   className="w-full px-4 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-omang-green/40 transition-all"
                 >
                   <option value="">Select an option</option>
@@ -198,17 +249,20 @@ const ContactSection = () => {
                 <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1">Message</label>
                 <textarea 
                   id="message" 
+                  name="message"
                   rows={4}
+                  required
                   className="w-full px-4 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-omang-green/40 transition-all"
                   placeholder="Your message"
                 ></textarea>
               </div>
               
               <button 
-                type="button" 
-                className="w-full py-3 bg-omang-green text-white rounded-md hover:bg-omang-green/90 transition-all duration-300 shadow-sm hover:shadow-md"
+                type="submit" 
+                disabled={loading}
+                className="w-full py-3 bg-omang-green text-white rounded-md hover:bg-omang-green/90 transition-all duration-300 shadow-sm hover:shadow-md disabled:opacity-50"
               >
-                Send Message
+                {loading ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>

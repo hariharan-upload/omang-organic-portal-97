@@ -1,8 +1,8 @@
-
 import { useRef, useEffect } from 'react';
 import { Globe, TrendingUp, Users, Building } from 'lucide-react';
 import AnimatedImage from './ui/AnimatedImage';
 import { cn } from '@/lib/utils';
+import globalDistributionImage from '@/assets/global_image.png';
 
 const StatItem = ({ value, label, delay }: { value: string; label: string; delay: number }) => {
   return (
@@ -48,7 +48,7 @@ const GlobalReachSection = () => {
   }, []);
 
   return (
-    <section id="global-reach" ref={sectionRef} className="section-padding bg-white overflow-hidden">
+    <section id="global-reach" ref={sectionRef} className="section-padding py-32 bg-white overflow-hidden">
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div>
@@ -77,7 +77,7 @@ const GlobalReachSection = () => {
               and the growing Middle Eastern market.
             </p>
             
-            <div 
+            {/* <div 
               className="flex items-center mb-8 opacity-0" 
               data-animate="slide-in-right"
               style={{ animationDelay: '600ms' }}
@@ -123,7 +123,7 @@ const GlobalReachSection = () => {
                   We've established distribution channels in UAE, Saudi Arabia, Qatar, Kuwait, Oman, and Bahrain.
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
           
           <div className="relative">
@@ -138,23 +138,28 @@ const GlobalReachSection = () => {
               data-animate="fade-in"
               style={{ animationDelay: '600ms' }}
             >
-              <AnimatedImage 
-                src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+              {/* <AnimatedImage 
+                src="/images/Screenshot 2025-05-28 at 4.58.21 PM.png" 
                 alt="Global Organic Distribution" 
                 className="aspect-[4/3] w-full"
+              /> */}
+              <img 
+                src={globalDistributionImage} 
+                alt="Global Organic Distribution" 
+                className="w-full" 
               />
             </div>
           </div>
         </div>
         
-        <div className="mt-20 py-12 border-t border-b border-border">
+        {/* <div className="mt-20 py-12 border-t border-b border-border">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatItem value="25+" label="Countries Sourced From" delay={400} />
             <StatItem value="12" label="Middle East Markets" delay={600} />
             <StatItem value="500+" label="Product Varieties" delay={800} />
             <StatItem value="98%" label="Client Satisfaction" delay={1000} />
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

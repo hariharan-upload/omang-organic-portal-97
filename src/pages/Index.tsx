@@ -1,5 +1,5 @@
-
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import AboutSection from '@/components/AboutSection';
@@ -35,6 +35,12 @@ const Index = () => {
   }, []);
 
   return (
+    <>
+    <Helmet>
+      <title>Omang - Connecting Global Suppliers with Middle Eastern Markets</title>
+      <meta name="description" content="Omang connects global suppliers with Middle Eastern markets, offering a wide range of products and services tailored to your needs." />
+      <link rel="icon" href="/favicon.ico" />
+    </Helmet>
     <div className="min-h-screen bg-omang-beige antialiased overflow-x-hidden">
       <Header />
       <Hero />
@@ -44,6 +50,7 @@ const Index = () => {
       <ContactSection />
       <Footer />
     </div>
+    </>
   );
 };
 

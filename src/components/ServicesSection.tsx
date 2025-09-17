@@ -63,7 +63,7 @@ const ServicesSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <FeatureCard 
             icon={<Tag size={24} />}
             title="Private Labeling"
@@ -84,7 +84,7 @@ const ServicesSection = () => {
             description="Leverage our established distribution channels across the Middle East region to bring your organic brands to new markets with strategic placement and marketing support."
             delay={1000}
           />
-        </div>
+        </div> */}
         
         <div 
           className="mt-16 p-8 bg-white border border-omang-cream rounded-lg shadow-sm text-center opacity-0"

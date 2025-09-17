@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://omangfoods.com/sitemap.xml
