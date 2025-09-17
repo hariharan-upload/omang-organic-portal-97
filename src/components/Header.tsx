@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Leaf, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Logo from '../assets/logo.webp';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,8 +28,8 @@ const Header = () => {
       )}
     >
       <div className="container-custom flex items-center justify-between">
-        <a href="#" className="flex items-center space-x-2 group">
-          <Leaf className={cn(
+        <a href="/" className="flex items-center space-x-2 group">
+          {/* <Leaf className={cn(
             "transition-colors duration-300",
             isScrolled ? "text-omang-green" : "text-omang-green"
           )} />
@@ -37,7 +38,8 @@ const Header = () => {
             isScrolled ? "text-foreground" : "text-foreground"
           )}>
             Omang Organics
-          </span>
+          </span> */}
+          <img src={Logo} alt="Omang Logo" className="h-16 w-auto" />
         </a>
 
         <nav className="hidden md:flex items-center space-x-8">
